@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Archia-Regular';
+  src: url('./assets/Archia-Regular.otf');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 html,
 body {
   padding: 0;
