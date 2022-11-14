@@ -2,12 +2,21 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useState } from 'react'
 import styled from 'styled-components'
+import DATA_CARDS from '../data/dataCards'
 
 const Home = () => {
   const [activeItem, setActiveItem] = useState(1)
 
-  const handleHover = (id: number) => {}
-  const handleLeaveHover = () => {}
+  const handleHover = (id: number) => {
+    if (activeItem === id) return
+
+    setActiveItem(id)
+  }
+  const handleLeaveHover = () => {
+    if (activeItem === 1) return
+
+    setActiveItem(1)
+  }
 
   return (
     <div>
@@ -35,7 +44,22 @@ const Home = () => {
                 <SearchButton>Go</SearchButton>
               </SearchWrapper>
             </LeftSide>
-            <Container>2</Container>
+
+            <RightSide>
+              {DATA_CARDS.map(({ id, imageUrl }) => (
+                <ItemWrapper
+                  key={id}
+                  onMouseOver={() => handleHover(id)}
+                  onMouseLeave={handleLeaveHover}
+                  isActive={activeItem === id}
+                >
+                  <Item
+                    backgroundImageUrl={imageUrl}
+                    isActive={activeItem === id}
+                  ></Item>
+                </ItemWrapper>
+              ))}
+            </RightSide>
           </ContentWrapper>
         </Wrapper>
       </PageContainer>
@@ -147,7 +171,7 @@ const SearchButton = styled.button`
   }
 `
 
-const Container = styled.div`
+const RightSide = styled.div`
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -157,6 +181,49 @@ const Container = styled.div`
   width: calc(100% - 100px);
   height: 600px;
   border: 1px solid black;
+`
+
+interface ItemWrapperProps {
+  isActive: boolean
+}
+
+const ItemWrapper = styled.div<ItemWrapperProps>`
+  position: relative;
+  overflow: hidden;
+  min-width: 150px;
+  cursor: pointer;
+  border-radius: 20px;
+  padding: 0 20px;
+  flex-grow: ${({ isActive }) => (isActive ? 4 : 1)};
+  transition: all 0.6s ease;
+`
+
+interface ItemProps {
+  isActive: boolean
+  backgroundImageUrl: string
+}
+
+const Item = styled.div<ItemProps>`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-image: ${({ backgroundImageUrl }) => `url(${backgroundImageUrl})`};
+  background-position: top;
+  background-size: auto ${({ isActive }) => (isActive ? '120%' : '100%')};
+  border-radius: 20px;
+  transition: all 0.6s ease;
+  overflow: hidden;
+
+  :after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 50%;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+  }
 `
 
 export default Home
