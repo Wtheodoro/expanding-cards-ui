@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useState } from 'react'
 import styled from 'styled-components'
+import ExpandableCard from '../components/ExpandableCard'
 import DATA_CARDS from '../data/dataCards'
 
 const Home = () => {
@@ -46,39 +47,15 @@ const Home = () => {
             </LeftSide>
 
             <RightSide>
-              {DATA_CARDS.map(
-                ({ id, imageUrl, name, topicList, shortName }) => (
-                  <ItemWrapper
-                    key={id}
-                    onMouseOver={() => handleHover(id)}
-                    onMouseLeave={handleLeaveHover}
-                    isActive={activeItem === id}
-                  >
-                    <Item
-                      backgroundImageUrl={imageUrl}
-                      isActive={activeItem === id}
-                    >
-                      <CardInfoWrapper
-                        isActive={id === activeItem}
-                        isFirst={id === 1}
-                      >
-                        <CourseFullname>{name}</CourseFullname>
-                        <TopicListWrapper>
-                          <TopicItems>{topicList}</TopicItems>
-                          <TopicText>Topics</TopicText>
-                        </TopicListWrapper>
-                      </CardInfoWrapper>
-
-                      <ContentWrap2
-                        isActive={id === activeItem}
-                        isFirst={id === 1}
-                      >
-                        <ShortName>{shortName}</ShortName>
-                      </ContentWrap2>
-                    </Item>
-                  </ItemWrapper>
-                )
-              )}
+              {DATA_CARDS.map((data) => (
+                <ExpandableCard
+                  key={data.id}
+                  isActive={activeItem === data.id}
+                  handleHover={() => handleHover(data.id)}
+                  handleLeaveHover={handleLeaveHover}
+                  {...data}
+                />
+              ))}
             </RightSide>
           </ContentWrapper>
         </Wrapper>
@@ -200,117 +177,6 @@ const RightSide = styled.div`
   max-width: 960px;
   width: calc(100% - 100px);
   height: 600px;
-`
-
-interface ItemWrapperProps {
-  isActive: boolean
-}
-
-const ItemWrapper = styled.div<ItemWrapperProps>`
-  position: relative;
-  overflow: hidden;
-  min-width: 150px;
-  cursor: pointer;
-  border-radius: 20px;
-  padding: 0 20px;
-  flex-grow: ${({ isActive }) => (isActive ? 4 : 1)};
-  transition: all 0.6s ease;
-`
-
-interface ItemProps {
-  isActive: boolean
-  backgroundImageUrl: string
-}
-
-const Item = styled.div<ItemProps>`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background-image: ${({ backgroundImageUrl }) => `url(${backgroundImageUrl})`};
-  background-position: top;
-  background-size: auto ${({ isActive }) => (isActive ? '120%' : '100%')};
-  border-radius: 20px;
-  transition: all 0.6s ease;
-  overflow: hidden;
-
-  :after {
-    content: '';
-    display: block;
-    position: absolute;
-    height: 50%;
-    width: 100%;
-    left: 0;
-    bottom: 0;
-    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
-  }
-`
-
-interface CardInfoWrapperProps {
-  isFirst: boolean
-  isActive: boolean
-}
-
-const CardInfoWrapper = styled.div<CardInfoWrapperProps>`
-  box-sizing: border-box;
-  position: absolute;
-  bottom: 80px;
-  height: 80px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 1;
-  padding: 0 40px;
-  padding-left: ${({ isFirst }) => (isFirst ? '100px' : '40px')};
-  transition: all 0.6s ease;
-  opacity: ${({ isActive }) => (isActive ? '1' : '0')};
-`
-
-const CourseFullname = styled.div`
-  font-size: 34px;
-  color: #fff;
-  font-weight: 600;
-  word-break: keep-all;
-  height: 100%;
-  width: 10vw;
-`
-
-const TopicListWrapper = styled.div`
-  text-align: center;
-  color: #fff;
-`
-
-const TopicItems = styled.div`
-  font-size: 52px;
-  line-height: 1;
-`
-
-const TopicText = styled.div`
-  text-transform: uppercase;
-`
-
-interface CardInfoWrapperProps {
-  isFirst: boolean
-  isActive: boolean
-}
-
-const ContentWrap2 = styled.div<CardInfoWrapperProps>`
-  width: 120px;
-  height: 120px;
-  background-color: #1e1e2f;
-  color: #fff;
-  position: absolute;
-  left: 0;
-  bottom: 60px;
-  z-index: 1;
-  transition: all 0.6s ease;
-  opacity: ${({ isActive }) => (isActive ? '0' : '1')};
-  display: ${({ isFirst }) => (isFirst ? 'none' : 'block')};
-`
-
-const ShortName = styled.div`
-  font-size: 34px;
-  transform: rotate(-90deg);
 `
 
 export default Home
