@@ -92,7 +92,7 @@ interface CardInfoWrapperProps {
   isActive: boolean
 }
 
-export const ContentWrap2 = styled.div<CardInfoWrapperProps>`
+export const CardInfoVerticalWrapper = styled.div<CardInfoWrapperProps>`
   width: 120px;
   height: 120px;
   background-color: #1e1e2f;

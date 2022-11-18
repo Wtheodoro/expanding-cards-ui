@@ -1,7 +1,7 @@
 import React from 'react'
 import {
   CardInfoWrapper,
-  ContentWrap2,
+  CardInfoVerticalWrapper,
   CourseFullname,
   Item,
   ItemWrapper,
@@ -48,9 +48,9 @@ const ExpandableCard: React.FC<IExpandableCard> = ({
           </TopicListWrapper>
         </CardInfoWrapper>
 
-        <ContentWrap2 isActive={isActive} isFirst={id === 1}>
+        <CardInfoVerticalWrapper isActive={isActive} isFirst={id === 1}>
           <ShortName>{shortName}</ShortName>
-        </ContentWrap2>
+        </CardInfoVerticalWrapper>
       </Item>
     </ItemWrapper>
   )
