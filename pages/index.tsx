@@ -46,19 +46,39 @@ const Home = () => {
             </LeftSide>
 
             <RightSide>
-              {DATA_CARDS.map(({ id, imageUrl }) => (
-                <ItemWrapper
-                  key={id}
-                  onMouseOver={() => handleHover(id)}
-                  onMouseLeave={handleLeaveHover}
-                  isActive={activeItem === id}
-                >
-                  <Item
-                    backgroundImageUrl={imageUrl}
+              {DATA_CARDS.map(
+                ({ id, imageUrl, name, topicList, shortName }) => (
+                  <ItemWrapper
+                    key={id}
+                    onMouseOver={() => handleHover(id)}
+                    onMouseLeave={handleLeaveHover}
                     isActive={activeItem === id}
-                  ></Item>
-                </ItemWrapper>
-              ))}
+                  >
+                    <Item
+                      backgroundImageUrl={imageUrl}
+                      isActive={activeItem === id}
+                    >
+                      <CardInfoWrapper
+                        isActive={id === activeItem}
+                        isFirst={id === 1}
+                      >
+                        <CourseFullname>{name}</CourseFullname>
+                        <TopicListWrapper>
+                          <TopicItems>{topicList}</TopicItems>
+                          <TopicText>Topics</TopicText>
+                        </TopicListWrapper>
+                      </CardInfoWrapper>
+
+                      <ContentWrap2
+                        isActive={id === activeItem}
+                        isFirst={id === 1}
+                      >
+                        <ShortName>{shortName}</ShortName>
+                      </ContentWrap2>
+                    </Item>
+                  </ItemWrapper>
+                )
+              )}
             </RightSide>
           </ContentWrapper>
         </Wrapper>
@@ -180,7 +200,6 @@ const RightSide = styled.div`
   max-width: 960px;
   width: calc(100% - 100px);
   height: 600px;
-  border: 1px solid black;
 `
 
 interface ItemWrapperProps {
@@ -224,6 +243,74 @@ const Item = styled.div<ItemProps>`
     bottom: 0;
     background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
   }
+`
+
+interface CardInfoWrapperProps {
+  isFirst: boolean
+  isActive: boolean
+}
+
+const CardInfoWrapper = styled.div<CardInfoWrapperProps>`
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 80px;
+  height: 80px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+  padding: 0 40px;
+  padding-left: ${({ isFirst }) => (isFirst ? '100px' : '40px')};
+  transition: all 0.6s ease;
+  opacity: ${({ isActive }) => (isActive ? '1' : '0')};
+`
+
+const CourseFullname = styled.div`
+  font-size: 34px;
+  color: #fff;
+  font-weight: 600;
+  word-break: keep-all;
+  height: 100%;
+  width: 10vw;
+`
+
+const TopicListWrapper = styled.div`
+  text-align: center;
+  color: #fff;
+`
+
+const TopicItems = styled.div`
+  font-size: 52px;
+  line-height: 1;
+`
+
+const TopicText = styled.div`
+  text-transform: uppercase;
+`
+
+interface CardInfoWrapperProps {
+  isFirst: boolean
+  isActive: boolean
+}
+
+const ContentWrap2 = styled.div<CardInfoWrapperProps>`
+  width: 120px;
+  height: 120px;
+  background-color: #1e1e2f;
+  color: #fff;
+  position: absolute;
+  left: 0;
+  bottom: 60px;
+  z-index: 1;
+  transition: all 0.6s ease;
+  opacity: ${({ isActive }) => (isActive ? '0' : '1')};
+  display: ${({ isFirst }) => (isFirst ? 'none' : 'block')};
+`
+
+const ShortName = styled.div`
+  font-size: 34px;
+  transform: rotate(-90deg);
 `
 
 export default Home
